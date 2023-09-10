@@ -9,10 +9,10 @@
 
 ## Installation
 
-- clone the repo 
-- cd <repo name>
+- clone the repo: `git clone <repo link>` 
+- cd to the lab application: `cd GSG_fake_news/FastApiDataLab On Windows, use GSG_fake_news\FastApiDataLab`
 - create virtual environment: `python -m venv venv`
 - load the venv: `source venv/bin/activate  # On Windows, use venv\Scripts\activate`
 - install the requirements: `pip install -r req.txt`
-- start the application: `cd FastApiDataLab/Backend On Windows, use FastApiDataLab\Backend`
+- cd to backend application: `cd Backend`
 - run the server : `uvicorn main:app --reload`
