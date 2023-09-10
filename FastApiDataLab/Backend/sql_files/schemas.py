@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class ItemBase(BaseModel):
     title: str
-    description: str | None = None
+    description: str = None
 
 
 class ItemCreate(ItemBase):
@@ -14,7 +14,7 @@ class Item(ItemBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserBase(BaseModel):
@@ -28,4 +28,4 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
