@@ -20,4 +20,3 @@ sqlalchemy==2.0.20
 greenlet==2.0.2
 mysql-connector-python==8.1.0
 protobuf==4.21.12
-alembic==1.12.0
