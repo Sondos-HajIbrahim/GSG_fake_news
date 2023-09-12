@@ -10,3 +10,9 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
 
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class UserLoginResponse(BaseModel):
+    access_token: str

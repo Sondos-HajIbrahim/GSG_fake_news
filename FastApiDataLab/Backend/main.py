@@ -17,6 +17,19 @@ def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     return user_service.create_user(db, user)
 
+@app.post("/login/",response_model=schemas.UserLoginResponse)
+def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
+    db_user = user_service.get_user_by_email(db, email=user.email)
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="User not found")
+    if not user_service.verify_password(user.password, db_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect password")
+    # Create and return a token for authentication (you need to implement token creation)
+    token = user_service.create_access_token(data={"sub": user.email})
+    return {"access_token": token}
+
+
+
 @app.get("/")
 def hello_world():
     return {"Hello": "World"}
