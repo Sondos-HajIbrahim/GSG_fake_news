@@ -4,9 +4,12 @@ import uvicorn
 from sql_files import  models
 from sql_files.databse import engine,get_db
 import schemas
-from services import UserService
+from services import UserService,NewsService
+from typing import List
+
 app = FastAPI()
 user_service=UserService()
+news_service=NewsService()
 
 
 
@@ -27,6 +30,11 @@ def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
     # Create and return a token for authentication (you need to implement token creation)
     token = user_service.create_access_token(data={"sub": user.email})
     return {"access_token": token}
+
+@app.get("/news/", response_model=List[schemas.News])
+def get_news_list(skip: int = 0, limit: int = 10,type:str="all", db: Session = Depends(get_db)):
+    news = news_service.get_news(db, skip=skip, limit=limit,type=type)
+    return news
 
 
 

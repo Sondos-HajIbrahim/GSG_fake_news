@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from schemas import UserCreate
-from sql_files.models import User
+from sql_files.models import User,News
 from passlib.context import CryptContext
 import jwt
 from datetime import datetime, timedelta
@@ -33,4 +34,15 @@ class UserService:
 
 
 
+class NewsService:
+    def get_news(self,db: Session, skip: int, limit:int,type:str):
+        news = db.query(News)
 
+        if type=="fake":
+            news=news.filter(News.fake==True)
+        elif type=="true":
+            news=news.filter(News.fake==False)
+
+        news=news.order_by(desc(News.id)).offset(skip).limit(limit).all()
+
+        return news
