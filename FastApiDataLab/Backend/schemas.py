@@ -16,3 +16,12 @@ class UserLogin(BaseModel):
 
 class UserLoginResponse(BaseModel):
     access_token: str
+
+class NewsBase(BaseModel):
+    title: str
+    text: str
+    added_by: str
+    fake: bool
+
+class News(NewsBase):
+    id: int
