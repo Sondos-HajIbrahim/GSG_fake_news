@@ -1,6 +1,7 @@
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
-from schemas import UserCreate, User
+from schemas import UserCreate
+from sql_files.models import User
 
 class UserService:
     password_hash = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -12,5 +13,8 @@ class UserService:
         db.commit()
         db.refresh(db_user)
         return db_user
+
+    def get_user_by_email(self, db: Session, email: str):
+        return db.query(User).filter(User.email == email).first()
 
 

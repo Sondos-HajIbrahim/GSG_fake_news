@@ -1,27 +1,21 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 import uvicorn
-from sql_files import crud, models
+from sql_files import  models
 from sql_files.databse import engine,get_db
-from schemas import UserCreate
+import schemas
 from services import UserService
-from sqlalchemy import and_
-from sql_files.models import User
 app = FastAPI()
 user_service=UserService()
 
 
 
-@app.post("/signup", response_model=User)
-def signup(user: UserCreate, db: Session = Depends(get_db)):
-    # Check if the email is already registered
-    if db.query(User).filter(and_(User.email == user.email)).first():
+@app.post("/signup/", response_model=schemas.User)
+def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = user_service.get_user_by_email(db, email=user.email)
+    if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-
-    # Create the user
-    db_user = user_service.create_user(db, user)
-    return db_user
-
+    return user_service.create_user(db, user)
 
 @app.get("/")
 def hello_world():
